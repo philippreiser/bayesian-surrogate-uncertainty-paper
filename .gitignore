@@ -1,0 +1,16 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+fitted_models/
+plots/
+Rplots.pdf
+src/stan_code/*
+!src/stan_code/**/
+!src/stan_code/*.*
+_SBC_cache
+evaluation/
+Rplots.pdf
+inv_bayes_surrogate_uncertainty_prop.Rproj
+README.html
+*.Rproj
