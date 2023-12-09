@@ -1,0 +1,27 @@
+seed: 4
+surrogate_model: "pce"
+
+# s-step
+n_sims: !expr c(10, 20, 50)
+sigma_sim: 0.01
+
+# i-step
+w_exp_gts: !expr c(-0.05, 0.1, 0.4)
+sigma_exp: 0.01
+n_exp: 5
+lower_w_exp: -1
+upper_w_exp: 1
+use_clustering: FALSE
+number_clusters: 1000
+propagate_sigma_a: FALSE
+
+# PCE
+poly_degree: 5
+M: 1
+
+# stan
+refresh_cmdstan: 0
+adapt_delta: 0.99
+chains: 4
+iter_sampling: 4000
+iter_warmup: 1000

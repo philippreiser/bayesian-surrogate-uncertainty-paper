@@ -1,0 +1,30 @@
+seed: 829128
+surrogate_model: "true_model"
+
+# sbc
+n_sims_sbc_s: 1
+n_sims_sbc_i: 2
+keep_fits: FALSE
+
+# s-step
+n_sims: !expr c(5)
+sigma_sim: !expr c(0.01)
+
+# i-step
+n_exp: 5
+lower_w_exp: -1
+upper_w_exp: 1
+use_clustering: TRUE
+number_clusters: 25
+propagate_sigma_a: FALSE
+
+# PCE
+poly_degree: 5
+M: 1
+
+# stan
+refresh_cmdstan: 0
+adapt_delta: 0.99
+chains: 1
+iter_sampling: 100
+iter_warmup: 100

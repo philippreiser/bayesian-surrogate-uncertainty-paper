@@ -1,0 +1,42 @@
+seed: 829127
+eval_analytic: TRUE
+eval_mcmc: FALSE
+model: "intercept_slope"
+
+# T-step
+omega_t: !expr c(-0.9, -0.3)
+c_gt: !expr c(0.5, 2)
+sigma_a_values: !expr c(0.1, 0.5, 1)
+mu_t0: !expr c(0,0)
+sigma_t0: 10
+adapt_delta_t_step: 0.8
+
+# I-step
+omega_i_gt_values: !expr c(-0.5)
+omega_i_range : !expr c(-1, 1, 0.005)
+
+sigma_i: 0.1
+mu_i0: !expr 0
+sigma_i0: 1
+r_tol: !expr 1e-5
+
+# point
+adapt_delta_point: 0.99
+
+# E-lik
+adapt_delta_e_lik: 0.99
+numint_lower_c_e_lik: !expr c(-0.25, 0.5)
+numint_upper_c_e_lik: !expr c(1.5, 3)
+
+# E-post
+adapt_delta_e_post: 0.99
+n_c_skip: 5
+numint_lower_c_e_post: !expr c(0.25, 1.5)
+numint_upper_c_e_post: !expr c(0.75, 2.5)
+numint_lower_w_e_post: -5
+numint_upper_w_e_post: 5
+
+# E-log-lik
+adapt_delta_e_log_lik: 0.99
+numint_lower_c_e_log_lik: !expr c(-0.25, 1.0)
+numint_upper_c_e_log_lik: !expr c(1.25, 3)
