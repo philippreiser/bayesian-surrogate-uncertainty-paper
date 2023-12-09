@@ -80,7 +80,7 @@ The results are then stored in `plots/logistic_case_sbc/`.
 
 ------------------------------------------------------------------------
 
-## Citation {#citation}
+## Citation
 
 ``` bibtex
 @misc{},
