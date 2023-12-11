@@ -7,7 +7,7 @@ __Authors:__ Philipp Reiser, Javier Enrique Aguilar, Anneli Guthke, Paul-Christi
 ## Overview
 
 This repository contains code to replicate key experiments from our
-paper Uncertainty Quantification and Propagation in Surrogate-based
+[paper](https://arxiv.org/abs/2312.05153) Uncertainty Quantification and Propagation in Surrogate-based
 Bayesian Inference.
 
 <img src="images/overview.png" width="80%"/>
