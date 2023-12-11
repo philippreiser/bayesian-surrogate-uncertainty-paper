@@ -83,12 +83,12 @@ The results are then stored in `plots/logistic_case_sbc/`.
 ## Citation
 
 ``` bibtex
-@misc{},
-    title=
-    author=
-    year={2023},
-    eprint={},
-    archivePrefix={arXiv},
-    primaryClass={}
+@misc{reiser2023uncertainty,
+      title={Uncertainty Quantification and Propagation in Surrogate-based Bayesian Inference}, 
+      author={Philipp Reiser and Javier Enrique Aguilar and Anneli Guthke and Paul-Christian Bürkner},
+      year={2023},
+      eprint={2312.05153},
+      archivePrefix={arXiv},
+      primaryClass={stat.ML}
 }
 ```
