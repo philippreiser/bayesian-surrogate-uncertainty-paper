@@ -103,7 +103,7 @@ get_cluster_draws <- function(c_0, c, sigma_sim=NULL, number_centers=25, nstart=
               "cluster_weights" = cluster_weights))
 }
 
-init_w_exp_gt <- function() list(w_exp = w_exp_gt)
+init_w_exp_gt <- function() list(w_exp = as.matrix(w_exp_gt))
 
 get_experiment_dir_name <- function(head_path, experiment_name, model,
                                     experiment_details=NULL, date_time=NULL){
