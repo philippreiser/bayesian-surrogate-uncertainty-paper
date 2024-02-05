@@ -8,13 +8,15 @@ data {
 }
 
 parameters {
-  vector[3] c;                                   // coefficients
+  // surrogate coefficients
+  vector[3] c;
   real<lower=0> c_0;
   real<lower=sigma_sim_lower> sigma_sim;         // sigma for simulation values
 }
 
 transformed parameters {
   real lprior = 0;  // prior contributions to the log posterior
+  // priors for surrogate coefficients
   lprior += normal_lpdf(c_0 | 2, 1);
   lprior += normal_lpdf(c[1] | 10, 10);
   lprior += normal_lpdf(c[2] | 0, 1);
@@ -25,14 +27,11 @@ transformed parameters {
 model {
   // likelihood including constants
   if (!prior_only) {
-    // initialize linear predictor term
+    // surrogate likelihood
     target += normal_lpdf(y_sim | c_0 / (1+exp(-c[1] * (w_sim[:, 1] - c[2]))) + c[3], sigma_sim);
   }
   // priors including constants
   target += lprior;
-
-  // Observational model
-  //y_sim ~ normal(c_0 / (1+exp(-c[1] * (w_sim[:, 1] - c[2]))) + c[3], sigma_sim);
 }
 
 generated quantities {
