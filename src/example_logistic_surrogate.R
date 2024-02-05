@@ -100,7 +100,7 @@ smodel_fit <- smodel_fit_list[[1]]
 idx_exp <- 1
 w_exp_gt <- w_exp_gts[[idx_exp]]
 idata <- idatasets[[idx_exp]]
-posterior_list <- run_mean_ml_mlp_mplp_mp(idata, smodel_fit, number_clusters, n_exp, w_exp_gt,
+posterior_list <- run_mean_ml_mlp_mp(idata, smodel_fit, number_clusters, n_exp, w_exp_gt,
                                      poly_degree, M, fct, adapt_delta,
                                      file_imodel_ml, file_imodel_mp, file_imodel_mlp,
                                      iter_sampling, iter_warmup, chains,
