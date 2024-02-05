@@ -6,6 +6,9 @@ source(file.path(here(), "src/utils/utils.R"))
 source(file.path(here(), "src/data_generation/get_data.R"))
 theme_set(theme_bw())
 
+# Run the four different I-Steps.
+# Return data frames of I-posterior draws of w_exp and sigma_exp
+# Return fit diagnostics
 run_mean_ml_mlp_mp <- function(idata, smodel_fit, number_clusters, n_exp, w_exp_gt,
                                poly_degree, M, fct, adapt_delta,
                                file_imodel_ml, file_imodel_mp, file_imodel_mlp,
@@ -31,18 +34,22 @@ run_mean_ml_mlp_mp <- function(idata, smodel_fit, number_clusters, n_exp, w_exp_
                                               sigma_exp=idata$sigma_exp,
                                               prior_only=0,
                                               kmeans.nstart=25, kmeans.iter.max=100)
-  # create data for I-Step using clusters or all draws of the T-Posterior
+  # adjust MCMC parameters of E-Post depending on clustering or no clustering
   if (use_clustering){
+    # if clustering is used: MCMC parameters equal to other methods
     s_posterior_processing = "single_trial" # use "single_trial" (for clustering)
     iter_sampling_mp <- iter_sampling
     chains_mp <- chains
   } else{
+    # if all T-posterior draws are used: use only one chain per T-posterior draw
+    # and reduce the number of samples for each separate model per T-posterior draw
     s_posterior_processing = "single_trial_all"
     smodel_num_chains <- length(smodel_fit$metadata()$id)
     smodel_num_samples <- smodel_fit$metadata()$iter_sampling*smodel_num_chains
     iter_sampling_mp <- iter_sampling*chains/smodel_num_samples
     chains_mp <- 1
   }
+  # create data for I-Step using clusters or all draws of the T-Posterior
   i_data_ml <- i_step_1d_generator_single(n_exp, poly_degree, M,
                                           smodel_fit, fct, method=s_posterior_processing,
                                           number_draws=number_clusters,
@@ -53,19 +60,19 @@ run_mean_ml_mlp_mp <- function(idata, smodel_fit, number_clusters, n_exp, w_exp_
                                           prior_only=0,
                                           kmeans.nstart=25, kmeans.iter.max=2000)
   # Run different I-Steps
-  # Mean
+  # Point: Mean
   i_fit_mean <- get_imodel_fit(i_data_mean$generated, file_imodel_mp, smodel_fit, i_data_mean, method = "mean", adapt_delta = adapt_delta, init = init_w_exp_gt,
                                iter_sampling = iter_sampling, iter_warmup = iter_warmup, chains = chains)
-  # Median
+  # Point: Median
   i_fit_median <- get_imodel_fit(i_data_median$generated, file_imodel_mp, smodel_fit, i_data_median, method = "mean", adapt_delta = adapt_delta, init = init_w_exp_gt,
                                iter_sampling = iter_sampling, iter_warmup = iter_warmup, chains = chains)
-  # Mixture Likelihood
+  # Expected Likelihood
   i_fit_ml <- get_imodel_fit(i_data_ml$generated, file_imodel_ml, smodel_fit, i_data_ml, method = "single_trial", adapt_delta = adapt_delta, init = init_w_exp_gt,
                              iter_sampling = iter_sampling, iter_warmup = iter_warmup, chains = chains)
-  # Mixture Posterior
+  # Expected Posterior
   i_fit_mp <- get_imodel_fit(i_data_ml$generated, file_imodel_mp, smodel_fit, i_data_ml, method = "multi_draws", adapt_delta = adapt_delta, init = init_w_exp_gt,
                              iter_sampling = iter_sampling_mp, iter_warmup = iter_warmup, chains = chains_mp)
-  # Mixture Log Posterior
+  # Expected Log Likelihood
   i_fit_mlp <- get_imodel_fit(i_data_ml$generated, file_imodel_mlp, smodel_fit, i_data_ml, method = "single_trial", adapt_delta = adapt_delta, init = init_w_exp_gt,
                               iter_sampling = iter_sampling, iter_warmup = iter_warmup, chains = chains)
 
@@ -77,7 +84,7 @@ run_mean_ml_mlp_mp <- function(idata, smodel_fit, number_clusters, n_exp, w_exp_
     posterior_draws_weighted_mp <- merge_chains(i_fit_mp$post_warmup_draws)
   }
 
-  # Bind w_exp and sigma_exp posterior draws of all methods in a df
+  # Store w_exp and sigma_exp posterior draws of all methods in a data frame
   posterior_mean <- merge_chains(rename_variables(i_fit_mean$draws("w_exp"), "mean" = "w_exp[1,1]"))
   posterior_median <- merge_chains(rename_variables(i_fit_median$draws("w_exp"), "median" = "w_exp[1,1]"))
   posterior_ml <- merge_chains(rename_variables(i_fit_ml$draws("w_exp"), "E-lik" = "w_exp[1,1]"))

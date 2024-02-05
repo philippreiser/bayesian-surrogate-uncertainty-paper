@@ -15,6 +15,8 @@ source(file.path(here(),"src/utils/true_models_helpers.R"))
 source(file.path(here(),"src/data_generation/get_data.R"))
 source(file.path(here(), "src/plotting/plotting.R"))
 
+# Train the surrogate model on simulation data and plot the posterior predictive
+# (T-Step)
 get_smodel_fit <- function(sdata, file_smodel, fct, plot_pp=TRUE,
                            model_title="PCE", hide_legend=FALSE,
                            title=NULL, iter_sampling=1000, chains=4,
@@ -52,13 +54,14 @@ sample_draws_weighted_mp <- function(imodel_fit, idata, chains, iter_sampling,
   return(draws_w_exp_weighted)
 }
 
+# Fit I-model / perform i-step, given a method
 get_imodel_fit <- function(idata, file_imodel, smodel_fit, sdata, method="mean",
                            number_draws=25, refresh=NULL, chains=4,
                            iter_sampling=1000, iter_warmup=1000, seed=101,
                            nweigted_samples=10000, adapt_delta=0.8, init=NULL){
-  # method = ["mean", "single_draws", "multi_draws" or "cluster_draws"]
   imodel <- cmdstan_model(file_imodel)
   if (method == "mean" | method == "single_trial" | method == "single_trial_all"){
+    # used for "Point", "E-Lik", "E-Log-Lik"
     imodel_fit <- imodel$sample(
       data = idata,
       seed = seed,
@@ -73,11 +76,10 @@ get_imodel_fit <- function(idata, file_imodel, smodel_fit, sdata, method="mean",
   }
   else if (method == "multi_draws" | method == "cluster_draws" |
            method == "weighted_cluster_draws" | method == "kmeanspp_draws"){
+    # used for "E-Post"
     fits_csv_files <- c()
     csv_dir <- file.path(here(), "fitted_models/_imodel_fits_cmdstan", strsplit(tempdir(), "/")[[1]][3])
     dir.create(csv_dir, showWarnings = FALSE, recursive=TRUE)
-    library(future)
-    plan(multisession, gc=TRUE, workers=10)
     for (i in (1:nrow(idata$c))){
       idata_tmp <- idata
       idata_tmp$c <- c(idata$c[i, ])
@@ -103,7 +105,7 @@ get_imodel_fit <- function(idata, file_imodel, smodel_fit, sdata, method="mean",
   if (method == "weighted_cluster_draws"){
     draws_weighted <- sample_draws_weighted_mp(imodel_fit, idata, chains, iter_sampling,
                                          variables=c("w_exp[1,1]", "sigma_exp"))
-    imodel_fit <- draws_weighted # TODO: convert to CmdStanMCMC object
+    imodel_fit <- draws_weighted
   }
   imodel_fit
 }
