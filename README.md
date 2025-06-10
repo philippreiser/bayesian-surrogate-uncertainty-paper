@@ -1,3 +1,4 @@
+[![DOI](https://img.shields.io/badge/DOI-10.18419/darus--4093-blue)](https://doi.org/10.18419/darus-4093)
 # Uncertainty Quantification and Propagation in Surrogate-based Bayesian Inference
 
 __Authors:__ Philipp Reiser, Javier Enrique Aguilar, Anneli Guthke, Paul-Christian Bürkner
