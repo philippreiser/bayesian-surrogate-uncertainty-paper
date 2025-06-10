@@ -1,4 +1,6 @@
-[![DOI](https://img.shields.io/badge/DOI-10.18419/darus--4093-blue)](https://doi.org/10.18419/darus-4093)
+[![Paper DOI](https://img.shields.io/badge/DOI-10.1007/s11222--025--10597--8-blue)](https://doi.org/10.1007/s11222-025-10597-8)
+[![Data/code DOI](https://img.shields.io/badge/DOI-10.18419/darus--4093-blue)](https://doi.org/10.18419/darus-4093)
+
 # Uncertainty Quantification and Propagation in Surrogate-based Bayesian Inference
 
 __Authors:__ Philipp Reiser, Javier Enrique Aguilar, Anneli Guthke, Paul-Christian Bürkner
@@ -8,7 +10,7 @@ __Authors:__ Philipp Reiser, Javier Enrique Aguilar, Anneli Guthke, Paul-Christi
 ## Overview
 
 This repository contains code to replicate key experiments from our
-[paper](https://arxiv.org/abs/2312.05153) Uncertainty Quantification and Propagation in Surrogate-based
+[paper](https://doi.org/10.1007/s11222-025-10597-8) Uncertainty Quantification and Propagation in Surrogate-based
 Bayesian Inference.
 
 <img src="images/overview.png" width="80%"/>
